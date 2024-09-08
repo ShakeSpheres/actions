@@ -35,8 +35,9 @@ jobs:
     - name: Run a one-line script
       run: echo "Hello, World!"
 
-    - name: Checkout repository again for local action
-      uses: actions/checkout@v2
-
     - name: Trigger Slack Notification
-      uses: ./.github/workflows/slack-notification.yml
+      uses: ./.github/actions/slack-notification
+      with:
+        select_input: ${{ github.event.inputs.select_input }}
+        string_input: ${{ github.event.inputs.string_input }}
+        branch_input: ${{ github.event.inputs.branch_input }}
