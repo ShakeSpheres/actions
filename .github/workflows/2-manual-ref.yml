@@ -1,0 +1,39 @@
+name: manual workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      select_input:
+        description: 'Select an option'
+        required: true
+        type: choice
+        options:
+          - hoge
+          - fuga
+          - piyo
+      string_input:
+        description: 'Enter a string'
+        required: true
+        type: string
+      branch_input:
+        description: 'Select a branch'
+        required: true
+        type: choice
+        options:
+          - main
+          - develop
+          - feature-branch
+
+jobs:
+  hello_world_job:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Run a one-line script
+      run: echo "Hello, World!"
+
+    - name: Trigger Slack Notification
+      uses: ./.github/workflows/2-slack-notification.yml

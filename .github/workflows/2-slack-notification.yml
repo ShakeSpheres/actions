@@ -1,0 +1,53 @@
+name: Slack Notification
+
+on: [workflow_call]
+
+jobs:
+  send_notification:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Send notification to Slack
+      id: slack
+      uses: slackapi/slack-github-action@v1.27.0
+      with:
+        payload: |
+          {
+            "text": "GitHub Actions Notification",
+            "blocks": [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "*Workflow executed by:*\n ${{ github.actor }}"
+                }
+              },
+              {
+                "type": "section",
+                "fields": [
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Select Input:*\n${{ github.event.inputs.select_input }}"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*String Input:*\n${{ github.event.inputs.string_input }}"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Branch Input:*\n${{ github.event.inputs.branch_input }}"
+                  }
+                ]
+              },
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "*Action URL:*\n<https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Action>"
+                }
+              }
+            ]
+          }
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
