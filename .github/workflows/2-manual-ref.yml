@@ -39,14 +39,15 @@ jobs:
       uses: actions/github-script@v4
       with:
         script: |
+          const { context } = require('@actions/github');
           github.actions.createWorkflowDispatch({
             owner: context.repo.owner,
             repo: context.repo.repo,
             workflow_id: '2-slack-notification.yml',
             ref: context.ref,
             inputs: {
-              select_input: github.event.inputs.select_input,
-              string_input: github.event.inputs.string_input,
-              branch_input: github.event.inputs.branch_input
+              select_input: context.payload.inputs.select_input,
+              string_input: context.payload.inputs.string_input,
+              branch_input: context.payload.inputs.branch_input
             }
           })
