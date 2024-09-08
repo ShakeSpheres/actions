@@ -40,7 +40,39 @@ jobs:
       with:
         payload: |
           {
-            "text": "*Workflow executed by:* ${{ github.actor }}\n*Select Input:* ${{ github.event.inputs.select_input }}\n*String Input:* ${{ github.event.inputs.string_input }}\n*Branch Input:* ${{ github.event.inputs.branch_input }}\n*Action URL:* https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            "blocks": [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "*Workflow executed by:* ${{ github.actor }}"
+                }
+              },
+              {
+                "type": "section",
+                "fields": [
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Select Input:*\n${{ github.event.inputs.select_input }}"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*String Input:*\n${{ github.event.inputs.string_input }}"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Branch Input:*\n${{ github.event.inputs.branch_input }}"
+                  }
+                ]
+              },
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "*Action URL:*\n<https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Action>"
+                }
+              }
+            ]
           }
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
