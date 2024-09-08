@@ -41,3 +41,5 @@ jobs:
         select_input: ${{ github.event.inputs.select_input }}
         string_input: ${{ github.event.inputs.string_input }}
         branch_input: ${{ github.event.inputs.branch_input }}
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
