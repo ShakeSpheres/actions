@@ -40,11 +40,7 @@ jobs:
       with:
         payload: |
           {
-            "text": '*Workflow executed by:* ${{ github.actor }}'+
-                    '*Select Input:* ${{ github.event.inputs.select_input }}'+
-                    '*String Input:* ${{ github.event.inputs.string_input }}'+
-                    '*Branch Input:* ${{ github.event.inputs.branch_input }}'+
-                    '*Action URL:* https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+            "text": "*Workflow executed by:* ${{ github.actor }}\n*Select Input:* ${{ github.event.inputs.select_input }}\n*String Input:* ${{ github.event.inputs.string_input }}\n*Branch Input:* ${{ github.event.inputs.branch_input }}\n*Action URL:* https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           }
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
