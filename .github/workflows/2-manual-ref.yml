@@ -36,4 +36,17 @@ jobs:
       run: echo "Hello, World!"
 
     - name: Trigger Slack Notification
-      uses: ./.github/workflows/2-slack-notification.yml
+      uses: actions/github-script@v4
+      with:
+        script: |
+          github.actions.createWorkflowDispatch({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            workflow_id: '2-slack-notification.yml',
+            ref: context.ref,
+            inputs: {
+              select_input: github.event.inputs.select_input,
+              string_input: github.event.inputs.string_input,
+              branch_input: github.event.inputs.branch_input
+            }
+          })
