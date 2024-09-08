@@ -1,16 +1,16 @@
 name: 'Slack Notification'
 description: 'Send a notification to Slack'
 inputs:
-  select_input:
-    description: 'Select an option'
+  env_name:
+    description: 'Enter an environment name'
     required: true
     type: string
-  string_input:
-    description: 'Enter a string'
+  branch_name:
+    description: 'Enter a branch name'
     required: true
     type: string
-  branch_input:
-    description: 'Select a branch'
+  use_workflow:
+    description: 'Enter a workflow name'
     required: true
     type: string
 runs:
@@ -28,7 +28,7 @@ runs:
                 "type": "section",
                 "text": {
                   "type": "mrkdwn",
-                  "text": "*Workflow executed by:* ${{ github.actor }}"
+                  "text": "*by:* ${{ github.actor }}"
                 }
               },
               {
@@ -36,15 +36,15 @@ runs:
                 "fields": [
                   {
                     "type": "mrkdwn",
-                    "text": "*Select Input:*\n${{ inputs.select_input }}"
+                    "text": "*env:*\n${{ inputs.env_name }}"
                   },
                   {
                     "type": "mrkdwn",
-                    "text": "*String Input:*\n${{ inputs.string_input }}"
+                    "text": "*branch:*\n${{ inputs.branch_name }}"
                   },
                   {
                     "type": "mrkdwn",
-                    "text": "*Branch Input:*\n${{ inputs.branch_input }}"
+                    "text": "*workflow:*\n${{ inputs.use_workflow }}"
                   }
                 ]
               },

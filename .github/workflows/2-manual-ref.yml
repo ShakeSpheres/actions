@@ -38,8 +38,8 @@ jobs:
     - name: Trigger Slack Notification
       uses: ./.github/actions/slack-notification
       with:
-        select_input: ${{ github.event.inputs.select_input }}
-        string_input: ${{ github.event.inputs.string_input }}
-        branch_input: ${{ github.event.inputs.branch_input }}
+        env_name: ${{ github.event.inputs.select_input }}
+        branch_name: ${{ github.event.inputs.string_input }}
+        use_workflow: ${{ github.event.inputs.branch_input }}
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
