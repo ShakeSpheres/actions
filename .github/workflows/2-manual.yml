@@ -34,3 +34,13 @@ jobs:
 
     - name: Run a one-line script
       run: echo "Hello, World!"
+
+    - name: Send notification to Slack
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        ACTOR: ${{ github.actor }}
+      run: |
+        curl -X POST -H 'Content-type: application/json' --data \
+        '{
+          "text": "Workflow executed by: '${ACTOR}'\nMessage: '${MESSAGE}'"
+        }' $SLACK_WEBHOOK_URL
