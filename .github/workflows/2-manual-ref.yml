@@ -1,4 +1,4 @@
-name: manual ref workflow
+name: manual workflow
 
 on:
   workflow_dispatch:
@@ -35,19 +35,8 @@ jobs:
     - name: Run a one-line script
       run: echo "Hello, World!"
 
+    - name: Checkout repository again for local action
+      uses: actions/checkout@v2
+
     - name: Trigger Slack Notification
-      uses: actions/github-script@v4
-      with:
-        script: |
-          const { context } = require('@actions/github');
-          github.actions.createWorkflowDispatch({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            workflow_id: '2-slack-notification.yml',
-            ref: context.ref,
-            inputs: {
-              select_input: context.payload.inputs.select_input,
-              string_input: context.payload.inputs.string_input,
-              branch_input: context.payload.inputs.branch_input
-            }
-          })
+      uses: ./.github/workflows/slack-notification.yml
