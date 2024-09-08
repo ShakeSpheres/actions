@@ -1,4 +1,4 @@
-name: Hello World Workflow
+name: manual workflow
 
 on:
   workflow_dispatch:
