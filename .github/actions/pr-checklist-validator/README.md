@@ -46,3 +46,19 @@ jobs:
 - [ ] チェックリスト項目2
 <!-- PR-CHECKLIST-VALIDATOR:END -->
 ```
+
+## リポジトリにブランチの保護ルールを設定する
+
+1. リポジトリの設定にアクセスする
+2. Settings（設定） タブをクリックする
+3. 左側のサイドバーで Code and automation セクションの Branches をクリックする
+4. new ruleset をクリックする
+5. Add branch rule（ブランチルールを追加） ボタンをクリックする
+6. ルール名を記入 (例: PR Checklist Validator)
+7. Enforcement status を Enabled にする
+8. Target branchesのadd target で対象ブランチを指定する
+9. 「Require status checks to pass」にcheckを入れる
+10. 「Require branches to be up to date before merging」にcheckを入れる
+11. 「Status checks that are required」の 「+ Add checks」を押下
+12. 導入したworkflowの名称を選択(例:validate-checklist)
+13. 「Svae changes」を押下
