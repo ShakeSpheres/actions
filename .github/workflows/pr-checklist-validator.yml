@@ -1,0 +1,17 @@
+name: PR Checklist Validator
+
+on:
+  pull_request:
+    types: [opened, edited, reopened]
+
+jobs:
+  validate-checklist:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run PR Checklist Validator
+        uses: ./.github/actions/pr-checklist-validator
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
