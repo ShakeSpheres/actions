@@ -12,21 +12,21 @@ runs:
       run: |
         echo "PR本文を取得中..."
         BODY=$(gh pr view ${{ github.event.pull_request.number }} --json body -q .body)
-        echo "PR本文:\n$BODY"
+        echo -e "PR本文:\n$BODY"
         
         # 指定されたタグ内のチェックリストを抽出
         CHECKLIST_SECTION=$(echo "$BODY" | awk '/<!-- PR-CHECKLIST-VALIDATOR:START -->/,/<!-- PR-CHECKLIST-VALIDATOR:END -->/')
         
-        echo "チェックリストセクション:\n$CHECKLIST_SECTION"
+        echo -e "チェックリストセクション:\n$CHECKLIST_SECTION"
         
         # セクション内の未チェックのチェックリスト項目を見つける正規表現
         UNCHECKED_ITEMS=$(echo "$CHECKLIST_SECTION" | grep -E '\[ \]')
-        
+        echo -e "チェックされていない項目:\n$UNCHECKED_ITEMS"
+
         if [ -n "$UNCHECKED_ITEMS" ]; then
-          echo "❌ チェックリストに未チェックの項目があります:"
-          echo "$UNCHECKED_ITEMS"
+          echo "❌ チェックリストにチェックされていない項目があります:"
           echo "::error::このPRをマージする前に、指定されたセクション内のすべてのチェックリスト項目をチェックする必要があります。"
-          exit 1  # 未チェックの項目がある場合、チェックを失敗させる
+          exit 1  # チェックされていない項目がある場合、チェックを失敗させる
         else
           echo "✅ 指定されたセクション内のすべてのチェックリスト項目がチェックされています。"
           exit 0  # すべての項目がチェックされている場合、正常終了
