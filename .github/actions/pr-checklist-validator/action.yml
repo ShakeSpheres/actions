@@ -12,12 +12,12 @@ runs:
       run: |
         echo "PR本文を取得中..."
         BODY=$(gh pr view ${{ github.event.pull_request.number }} --json body -q .body)
-        echo "PR本文: $BODY"
+        echo "PR本文:\n$BODY"
         
         # 指定されたタグ内のチェックリストを抽出
         CHECKLIST_SECTION=$(echo "$BODY" | awk '/<!-- PR-CHECKLIST-VALIDATOR:START -->/,/<!-- PR-CHECKLIST-VALIDATOR:END -->/')
         
-        echo "チェックリストセクション: $CHECKLIST_SECTION"
+        echo "チェックリストセクション:\n$CHECKLIST_SECTION"
         
         # セクション内の未チェックのチェックリスト項目を見つける正規表現
         UNCHECKED_ITEMS=$(echo "$CHECKLIST_SECTION" | grep -E '\[ \]')
