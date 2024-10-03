@@ -11,7 +11,7 @@ runs:
       shell: bash
       run: |
         echo "PR本文を取得中..."
-        BODY=$(gh pr view "${{ github.event.pull_request.number }}" --json body -q .body)
+        BODY="${{ github.event.pull_request.body }}"
         echo -e "PR本文:\n$BODY"
 
         # 指定されたタグ内のチェックリストを抽出
