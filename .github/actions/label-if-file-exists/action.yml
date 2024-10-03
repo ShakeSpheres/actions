@@ -1,0 +1,47 @@
+   name: 'Label if file exists in PR'
+   description: '指定されたファイルパターンに一致するファイルが存在する場合、指定されたラベルを追加します。'
+   inputs:
+     file_pattern:
+       description: 'ファイルパスを指定する(正規表現)'
+       required: true
+     label_name:
+       description: 'ファイルが存在する場合に追加するラベルを指定する'
+       required: true
+   runs:
+     using: 'composite'
+     steps:
+       - name: リポジトリのチェックアウト
+         uses: actions/checkout@v3
+
+       - name: ファイルパターンに一致するファイルが存在するかチェックし、ラベルを追加
+         uses: actions/github-script@v6
+         with:
+           script: |
+             const { context, github } = require('@actions/github');
+             const filePattern = new RegExp(process.env.FILE_PATTERN);
+             const labelName = process.env.LABEL_NAME;
+             const prNumber = context.payload.pull_request.number;
+
+             const { data: files } = await github.pulls.listFiles({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               pull_number: prNumber
+             });
+
+             const matchingFile = files.find(file => filePattern.test(file.filename));
+
+             if (matchingFile) {
+               console.log(`${matchingFile.filename}に一致するファイルが存在します。`);
+               await github.issues.addLabels({
+                 owner: context.repo.owner,
+                 repo: context.repo.repo,
+                 issue_number: prNumber,
+                 labels: [labelName]
+               });
+             } else {
+               console.log(`${filePattern}に一致するファイルは存在しません。`);
+             }
+         env:
+           FILE_PATTERN: ${{ inputs.file_pattern }}
+           LABEL_NAME: ${{ inputs.label_name }}
+           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
