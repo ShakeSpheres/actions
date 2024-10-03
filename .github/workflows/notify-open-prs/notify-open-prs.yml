@@ -1,0 +1,46 @@
+name: Notify Slack on Open PRs
+
+on:
+  workflow_call:
+
+jobs:
+  notify-slack:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Get open PRs
+        id: get_prs
+        run: |
+          PRS=$(gh pr list --json title,url,author,createdAt,state --jq '.[] | {title: .title, url: .url, author: .author.login, createdAt: .createdAt, state: .state}')
+          echo "::set-output name=prs::$PRS"
+
+      - name: Send notification to Slack
+        if: steps.get_prs.outputs.prs != '[]'
+        run: |
+          # PRリストをJSON形式で取得
+          PR_LIST=$(echo '${{ steps.get_prs.outputs.prs }}' | jq -c '.')
+          
+          # Slack Block Kit用のメッセージを作成
+          BLOCKS=$(echo "$PR_LIST" | jq -c '[.[] | {
+              type: "section",
+              text: {
+                  type: "mrkdwn",
+                  text: "*<\(.url)|\(.title)>*\n*Author*: \(.author)\n*Created At*: \(.createdAt)\n*State*: \(.state)"
+              },
+              accessory: {
+                  type: "button",
+                  text: {
+                      type: "plain_text",
+                      text: "View PR"
+                  },
+                  url: .url
+              }
+          }]')
+
+          # Slack Webhookにリクエストを送信
+          curl -X POST -H 'Content-type: application/json' \
+          --data "{\"blocks\":$BLOCKS}" \
+          ${{ secrets.SLACK_WEBHOOK_URL }}
