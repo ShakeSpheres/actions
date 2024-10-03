@@ -20,7 +20,7 @@ runs:
         echo -e "チェックリストセクション:\n$CHECKLIST_SECTION"
         
         # セクション内の未チェックのチェックリスト項目を見つける正規表現
-        UNCHECKED_ITEMS=$(echo "$CHECKLIST_SECTION" | grep -E '\[ \]' | grep -v '^$')
+        UNCHECKED_ITEMS=$(echo "$CHECKLIST_SECTION" | grep -E '\[ \]' | grep -v '^$' | xargs)
         
         # デバッグ用にUNCHECKED_ITEMSの内容を出力
         echo -e "未チェックの項目:\n$UNCHECKED_ITEMS"
