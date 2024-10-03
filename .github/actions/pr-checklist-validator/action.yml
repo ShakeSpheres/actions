@@ -29,6 +29,7 @@ runs:
           exit 1  # 未チェックの項目がある場合、チェックを失敗させる
         else
           echo "✅ 指定されたセクション内のすべてのチェックリスト項目がチェックされています。"
+          exit 0  # すべての項目がチェックされている場合、正常終了
         fi
       env:
         GITHUB_TOKEN: ${{ inputs.github_token }}
